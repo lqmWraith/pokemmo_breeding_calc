@@ -6,7 +6,8 @@ poke_list = []
 
 #make a pokemon class object
 class Pokemon():
-    def __init__(self, box_position, nature, hp, attack, defense, special_attack, special_defense, speed):
+    def __init__(self, name, box_position, nature, hp, attack, defense, special_attack, special_defense, speed):
+        self.name = name
         self.pos = box_position
         self.nat = nature
         self.hp = hp
@@ -39,16 +40,21 @@ def make_poke():
         temp_spatk = int(raw_input("Enter pokemon\'s Sp Attack IV:  "))
         temp_spdef = int(raw_input("Enter pokemon\'s Sp Defense IV:  "))
         temp_spd = int(raw_input("Enter pokemon\'s Speed IV:  "))
-        temp_name = raw_input("Enter a Unique Name:  ")
-        temp_name = Pokemon(temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd)
+        temp_name = str(raw_input("Enter a Unique Name:  "))
+        temp_name = Pokemon(temp_name, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd)
         poke_list.append(temp_name)
         print "\n"
         counter += 1
 
+#this function applies a score to each pokemon in poke_list
+def score_poke():
+    global poke_list
+    
+
 def main():
     make_poke()
     for i in poke_list:
-        print i, i.pos, i.nat, i.hp, i.atk, i.dfn, i.spatk, i.spdef, i.spd, "\n"
+        print i.name, i.pos, i.nat, i.hp, i.atk, i.dfn, i.spatk, i.spdef, i.spd, "\n"
 
 main()
 
