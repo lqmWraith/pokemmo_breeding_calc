@@ -1,4 +1,6 @@
 #LqmWraith's Breeding Calculator
+import os
+import time
 
 #list/array whatever it is in python
 poke_list = []
@@ -6,7 +8,7 @@ poke_list = []
 
 #make a pokemon class object
 class Pokemon():
-    def __init__(self, name, box_position, nature, hp, attack, defense, special_attack, special_defense, speed):
+    def __init__(self, name, box_position, nature, hp, attack, defense, special_attack, special_defense, speed, score):
         self.name = name
         self.pos = box_position
         self.nat = nature
@@ -16,6 +18,7 @@ class Pokemon():
         self.spatk = special_attack
         self.spdef = special_defense
         self.spd = speed
+        self.score = score
 
 #example of a pokemon
 #pass arguments right to pokemon class
@@ -41,20 +44,51 @@ def make_poke():
         temp_spdef = int(raw_input("Enter pokemon\'s Sp Defense IV:  "))
         temp_spd = int(raw_input("Enter pokemon\'s Speed IV:  "))
         temp_name = str(raw_input("Enter a Unique Name:  "))
-        temp_name = Pokemon(temp_name, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd)
+        score = 0
+        temp_name = Pokemon(temp_name, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd, score)
         poke_list.append(temp_name)
         print "\n"
         counter += 1
 
 #this function applies a score to each pokemon in poke_list
 def score_poke():
+    #apply score to object based on number of perfect iv values
     global poke_list
+    for i in poke_list:
+        if i.hp == 31:
+            i.score += 1
+        if i.atk == 31:
+            i.score += 1
+        if i.dfn == 31:
+            i.score += 1
+        if i.spatk == 31:
+            i.score += 1
+        if i.spdef == 31:
+            i.score += 1
+        if i.spd == 31:
+            i.score += 1
+        print i.score
+
+def save_list():
+    #save list to file or db
+    global poke_list
+    pass
+
+def load_list():
+    #import poke_list from file.py
+    pass
+
+def submit():
+    #take values, create object, write to list
+    pass
     
 
 def main():
     make_poke()
     for i in poke_list:
         print i.name, i.pos, i.nat, i.hp, i.atk, i.dfn, i.spatk, i.spdef, i.spd, "\n"
-
+    score_poke()
+    time.sleep(5)
+    quit()
+    
 main()
-
