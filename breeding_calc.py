@@ -1,12 +1,15 @@
 #LqmWraith's Breeding Calculator
+
+#~~~~~DEPENDENCIES~~~~~
 import os
 import time
+#for list sort
+import operator
 
-#list/array whatever it is in python
+#global to lazily pass between functions
 poke_list = []
 
-
-#make a pokemon class object
+#~~~~~POKEMON CLASS INSTANCE~~~~~
 class Pokemon():
     def __init__(self, name, box_position, nature, hp, attack, defense, special_attack, special_defense, speed, score):
         self.name = name
@@ -20,21 +23,20 @@ class Pokemon():
         self.spd = speed
         self.score = score
 
-#example of a pokemon
-#pass arguments right to pokemon class
-
-#pokemon1 = Pokemon(0,1,31,31,31,31,31,31)
-#print pokemon1.pos, pokemon1.nat, pokemon1.hp, pokemon1.atk, pokemon1.dfn, pokemon1.spatk, pokemon1.spdef, pokemon1.spd
-
+#~~~~~COMMAND LINE POKEMON CREATON FUNCTION~~~~~
 def make_poke():
+    #references poke_list out of scope
     global poke_list
-    #this would probably be split between field entry and a submit button function
-    #temp_stats will be used as arguments for class object creation
     print "Don\'t break this! No error handling\n"
     #runs determines number of pokemon
     runs = int(raw_input("How many pokemon do you have?:  "))
+    #used to realize when user has entered enough pokemon
     counter = 0
+    #the following could be for (i > runs), i++:
     while counter < runs:
+        #get stats int() converts to integer, str() to string.
+        #raw_input() for python2.x, use input() for 3.x +
+        #temp variables, for garbage collection
         temp_pos = int(raw_input("Enter a position for the pokemon in a box:  "))
         temp_nature = int(raw_input("Enter a Nature (1-25):  "))
         temp_hp = int(raw_input("Enter pokemon\'s HP IV:  "))
@@ -44,13 +46,16 @@ def make_poke():
         temp_spdef = int(raw_input("Enter pokemon\'s Sp Defense IV:  "))
         temp_spd = int(raw_input("Enter pokemon\'s Speed IV:  "))
         temp_name = str(raw_input("Enter a Unique Name:  "))
+        #placeholder for next function
         score = 0
+        #create instances
         temp_name = Pokemon(temp_name, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd, score)
+        #this is probably a bad way to do it
         poke_list.append(temp_name)
         print "\n"
         counter += 1
 
-#this function applies a score to each pokemon in poke_list
+#~~~~~APPLY SCORE~~~~~
 def score_poke():
     #apply score to object based on number of perfect iv values
     global poke_list
@@ -67,28 +72,47 @@ def score_poke():
             i.score += 1
         if i.spd == 31:
             i.score += 1
-        print i.score
+        #print i.score
 
+#~~~~~SORT LIST, DO YOU NEED AN EXPLANATION?~~~~~
+def sort_list():
+    global poke_list
+    #poke_list sorted by descending value based on score attribute that was changed by score_poke function
+    poke_list = sorted(poke_list, key=operator.attrgetter('score'), reverse=True)
+    print "Pokemon have been sorted based on number of IV\'s. Use the highest pokemon on the list for your base pokemon\n"
+    for i in poke_list:
+        print "Name     :  ", i.name, "\nBox Pos  :  ", i.pos, "\nScore    :  ", i.score, "\n"
+
+#~~~~~THE NEXT THING TO DO~~~~~
+def breed_path():
+    #calculate 1st breed, next breed, maybe hypotheticals. not sure how deep this one will go yet.
+    pass
+
+#~~~~~ALSO THE NEXT THING TO DO~~~~~
+def choose_preferences():
+    #this function will allow the user to target what is important to them. ie, nature=adamant(1), hp, def, spdef (3x31)
+    #this in combination with breed_path() is next
+    pass
+
+#~~~~~SAVE CURRENT POKEMON~~~~~
 def save_list():
     #save list to file or db
     global poke_list
     pass
 
+#~~~~~LOAD LIST FROM FILE~~~~~
 def load_list():
-    #import poke_list from file.py
+    #import poke_list from file
     pass
 
-def submit():
-    #take values, create object, write to list
-    pass
-    
-
+#~~~~~~~~~~~~~~
+#~~~~~MAIN~~~~~
+#~~~~~~~~~~~~~~
 def main():
     make_poke()
-    for i in poke_list:
-        print i.name, i.pos, i.nat, i.hp, i.atk, i.dfn, i.spatk, i.spdef, i.spd, "\n"
     score_poke()
+    sort_list()
     time.sleep(5)
     quit()
-    
+    #last 2 are just autoquit for testing
 main()
