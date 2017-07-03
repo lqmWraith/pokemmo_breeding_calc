@@ -8,11 +8,20 @@ import operator
 
 #global to lazily pass between functions
 poke_list = []
+calc_list = []
+pref_nature = 0
+pref_hp = False
+pref_atk = False
+pref_dfn = False
+pref_spatk = False
+pref_spdef = False
+pref_spd = False
 
 #~~~~~POKEMON CLASS INSTANCE~~~~~
 class Pokemon():
-    def __init__(self, name, box_position, nature, hp, attack, defense, special_attack, special_defense, speed, score):
+    def __init__(self, name, gender, box_position, nature, hp, attack, defense, special_attack, special_defense, speed, score):
         self.name = name
+        self.gender = gender
         self.pos = box_position
         self.nat = nature
         self.hp = hp
@@ -37,6 +46,7 @@ def make_poke():
         #get stats int() converts to integer, str() to string.
         #raw_input() for python2.x, use input() for 3.x +
         #temp variables, for garbage collection
+        temp_gen = str(raw_input("Is the Pokemon Male or Female? m/f:  "))
         temp_pos = int(raw_input("Enter a position for the pokemon in a box:  "))
         temp_nature = int(raw_input("Enter a Nature (1-25):  "))
         temp_hp = int(raw_input("Enter pokemon\'s HP IV:  "))
@@ -49,7 +59,7 @@ def make_poke():
         #placeholder for next function
         score = 0
         #create instances
-        temp_name = Pokemon(temp_name, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd, score)
+        temp_name = Pokemon(temp_name, temp_gen, temp_pos, temp_nature, temp_hp, temp_atk, temp_dfn, temp_spatk, temp_spdef, temp_spd, score)
         #this is probably a bad way to do it
         poke_list.append(temp_name)
         print "\n"
@@ -81,7 +91,7 @@ def sort_list():
     poke_list = sorted(poke_list, key=operator.attrgetter('score'), reverse=True)
     print "Pokemon have been sorted based on number of IV\'s. Use the highest pokemon on the list for your base pokemon\n"
     for i in poke_list:
-        print "Name     :  ", i.name, "\nBox Pos  :  ", i.pos, "\nScore    :  ", i.score, "\n"
+        print "Name     :  ", i.name, "\nGender   :  ", i.gender, "\nBox Pos  :  ", i.pos, "\nScore    :  ", i.score, "\n"
 
 #~~~~~THE NEXT THING TO DO~~~~~
 def breed_path():
@@ -90,8 +100,71 @@ def breed_path():
 
 #~~~~~ALSO THE NEXT THING TO DO~~~~~
 def choose_preferences():
+    global pref_nature
+    global pref_hp
+    global pref_atk
+    global pref_dfn
+    global pref_spatk
+    global pref_spdfn
+    global pref_spd
     #this function will allow the user to target what is important to them. ie, nature=adamant(1), hp, def, spdef (3x31)
     #this in combination with breed_path() is next
+    print "The following options are used to determine what kind of pokemon you will need.\n"
+    selection = int(raw_input("1 - 6x31 natured\n2 - 5x31 natured\n3 - Other(not implemented)\n"))
+    if selection == 1:
+        #We have a baller here
+        pref_nature = int(raw_input("Preferred Nature 1-25:  "))
+        pref_hp = True
+        pref_atk = True
+        pref_dfn = True
+        pref_spatk = True
+        pref_spdfn = True
+        pref_spd = True
+        
+    elif selection == 2:
+        #Im a budget breeder
+        pref_nature = int(raw_input("Preferred Nature 1-25:  "))
+        #hp
+        choice = int(raw_input("Do you need HP? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_hp = True
+        else:
+            pref_hp = False
+        #atk        
+        choice = int(raw_input("Do you need Attack? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_atk = True
+        else:
+            pref_atk = False
+        #dfn        
+        choice = int(raw_input("Do you need HP? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_dfn = True
+        else:
+            pref_dfn = False
+        #spatk        
+        choice = int(raw_input("Do you need HP? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_spatk = True
+        else:
+            pref_spatk = False
+        #spdef
+        choice = int(raw_input("Do you need HP? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_spdef = True
+        else:
+            pref_spdef = False
+        #speed
+        choice = int(raw_input("Do you need HP? 1-Yes, 0-No:  "))
+        if choice == 1:
+            pref_spd = True
+        else:
+            pref_spd = False
+    else:
+        print "That really wasn\'t an option bub."
+
+def breed():
+    #step 1 - take base pokemon
     pass
 
 #~~~~~SAVE CURRENT POKEMON~~~~~
